@@ -1,0 +1,23 @@
+<!-- CUISINE INDEX -->
+<% layout("\layouts/boilerplate") -%>
+<div class="desserts">
+    <div class="<%= category.toLowerCase() %>">
+        <div class="<%= category.toLowerCase() %>-desserts-header">
+            <h1><%= category %> Dishes</h1>
+            <p><i>Explore our delightful collection of <%= category %> dishes, crafted to tantalize your taste buds.</i></p>
+        </div>
+        <div class="unique-dessert-section">
+            <% dishes.forEach(dish => { %>
+                <div class="unique-dessert-item">
+                    <a href="/cuisine/<%= category %>/<%= dish._id %>">
+                        <img src="/images/<%= dish.image %>" alt="<%= dish.title %>">
+                        <div class="unique-dessert-details">
+                            <h3><%= dish.title %></h3>
+                        </div>
+                    </a>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+

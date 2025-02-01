@@ -1,0 +1,134 @@
+<% layout("\layouts/boilerplate") -%>
+
+    <!-- Featured Recipe Section -->
+    <div id="featuredRecipeCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="images/d_banner-1.jpg" class="d-block w-100" alt="Recipe 1">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="images/d_banner-2.jpg" class="d-block w-100" alt="Recipe 2">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="images/d_banner-3.jpg" class="d-block w-100" alt="Recipe 3">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#featuredRecipeCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#featuredRecipeCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Most Popular Recipes Section -->
+    <section class="popular-recipes container my-4">
+        <h2>Cuisine Categories</h2>
+        <div class="row g-1"> 
+            <!-- First Row -->
+            <div class="col-md-6">
+                <a href="/cuisine/Dessert" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/dessert_categorie.jpg" class="card-img" alt="dessert">
+                    <div class="card-img-overlay">
+                        Dessert
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-md-6">
+                <a href="/cuisine/Chinese" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/noodles.jpg" class="card-img" alt="chinese">
+                    <div class="card-img-overlay">
+                        Chinese Cuisine
+                    </div>
+                </div>
+            </a>
+            </div>
+
+            <!-- Second Row -->
+            <div class="col-md-3">
+                <a href="/cuisine/Soups" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/soup_categorie.jpg" class="card-img" alt="Soup">
+                    <div class="card-img-overlay">
+                        Soups
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/cuisine/Italian" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/tomato_bruschetta.jpg" class="card-img" alt="Italian">
+                    <div class="card-img-overlay">
+                        Italian Cuisine
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/cuisine/Gujarati" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/khichdi.jpg" class="card-img" alt="Gujarati">
+                    <div class="card-img-overlay">
+                        Gujarati Cuisine
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/cuisine/Salad" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/salads_categorie.jpg" class="card-img" alt="Salads">
+                    <div class="card-img-overlay">
+                        Salads
+                    </div>
+                </div>
+            </a>
+            </div>
+
+            <!-- Third Row -->
+            <div class="col-md-3">
+                <a href="/cuisine/Chaat" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/banner-3.jpg" class="card-img" alt="Chats">
+                    <div class="card-img-overlay">
+                        Chaats
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-md-6">
+                <a href="/cuisine/South Indian" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/south_categorie.jpeg" class="card-img" alt=" South Indian Cuisine">
+                    <div class="card-img-overlay">
+                        South Indian Cuisine
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-md-3">
+                <a href="/cuisine/Snacks" style="text-decoration: none;">
+                <div class="card">
+                    <img src="images/snacks_categorie.jpeg" class="card-img" alt="Street Food & Snacks">
+                    <div class="card-img-overlay">
+                        Street Food & Snacks
+                    </div>
+                </div>
+            </a>
+            </div>
+        </div>
+    </section>
+
+    <%- include("../includes/footer.ejs") %>

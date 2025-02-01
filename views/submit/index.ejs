@@ -1,0 +1,63 @@
+<% layout("\layouts/boilerplate") -%>
+
+<!-- Submit Form -->
+ <div class="submit">
+<div class="form-container">
+    <h1 class="form-title">Submit Your Recipe</h1>
+    <p class="form-description">
+        <i>Passionate about cooking? Submit your recipes and help others discover the joy of creating delicious dishes.</i>
+    </p>
+    <form action="/submit" method="POST" enctype="multipart/form-data">
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <!-- Recipe Name -->
+        <div class="mb-3">
+            <label for="recipeName" class="form-label">Title</label>
+            <input type="text" class="form-control" id="recipeName" name="recipeName" placeholder="Enter recipe name" required>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" rows="3" name="description" placeholder="Describe your recipe" required></textarea>
+        </div>
+
+        <!-- Ingredients -->
+        <div class="mb-3">
+            <label for="ingredients" class="form-label">Ingredients</label>
+            <input type="text" class="form-control" id="ingredients" name="ingredients" placeholder="Example: Curd">
+            <button type="button" class="btn btn-danger btn-sm mt-2">+ Ingredient</button>
+        </div>
+
+        <!-- Select Category -->
+        <div class="mb-3">
+            <label for="category" class="form-label">Select Category</label>
+            <select class="form-select" id="category" name="category" required>
+                <option selected>Select Category</option>
+                <option>Gujarati</option>
+                <option>Salad</option>
+                <option >Italian</option>
+                <option>Chinese</option>
+                <option>Dessert</option>
+                <option >Soup</option>
+                <option>Chaat</option>
+                <option>South Indian</option>
+                <option>Snack</option>
+            </select>
+        </div>
+
+        <!-- Product Image -->
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input class="form-control" type="file" name="image" id="image" required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-danger w-100">Submit Recipe</button>
+    </form>
+</div>
+</div>

@@ -1,0 +1,14 @@
+<!-- CUISINE SHOW -->
+<% layout("\layouts/boilerplate") -%>
+
+<div class="dish-container">
+    <div class="dish-image">
+        <img src="/images/<%= dish.image %>" alt="<%= dish.title %>">
+    </div>
+    <div class="dish-content">
+        <h1 class="desserts"><%= dish.title %></h1>
+        <p><i><strong>Category:</strong> <%= dish.category %></i></p><br>
+        <p><strong>Description:</strong> <%= dish.description %></p>
+        <a href="/cuisine/<%= dish.category %>">Back to <%= dish.category %></a>
+    </div>
+</div>
