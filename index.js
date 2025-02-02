@@ -3,29 +3,19 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing.js"); 
 const path = require("path");
 const ejsMate = require("ejs-mate");
-const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("cloudinary").v2;
 
 const app = express();
 
 
+const multer = require("multer");
 
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, path.join(__dirname, "/public/images"));
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, Date.now() + path.extname(file.originalname));
-//     }
-// });
-// const upload = multer({ storage });
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: "food_blog_images",  // Folder name in Cloudinary
-        allowed_formats: ["jpg", "png", "jpeg"]
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, "/public/images"));
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 const upload = multer({ storage });
@@ -61,22 +51,14 @@ app.post("/submit", upload.single("image"), async (req, res) => {
     }
 });
 
-// connect to cloudinary
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
 
 // Connect to MongoDB
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/flavorix");
+    const dbUrl= process.env.ATLASDB_URL;
 }
 main().then(() => {
     console.log("Connected to MongoDB");
 }).catch(err => console.log("MongoDB Connection Error:", err));
-
-
 
 // Middleware and Settings
 app.set("view engine", "ejs");
