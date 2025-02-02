@@ -1,63 +1,34 @@
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
+const Listing = require("./models/listing.js"); 
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 const app = express();
 
-// Configure Multer for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "/public/images"));
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+
+
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, path.join(__dirname, "/public/images"));
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, Date.now() + path.extname(file.originalname));
+//     }
+// });
+// const upload = multer({ storage });
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "food_blog_images",  // Folder name in Cloudinary
+        allowed_formats: ["jpg", "png", "jpeg"]
     }
 });
 const upload = multer({ storage });
-
-// Connect to MongoDB
-async function main() {
-    const dbUrl = process.env.ATLASDB_URL;
-    if (!dbUrl) {
-        console.error("MongoDB connection string is missing in environment variables.");
-        process.exit(1); // Exit process if DB URL is missing
-    }
-    await mongoose.connect(dbUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-    console.log("Connected to MongoDB");
-}
-
-main().catch(err => console.log("MongoDB Connection Error:", err));
-
-// Middleware and Settings
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({ extended: true }));
-app.engine("ejs", ejsMate);
-app.use(express.static(path.join(__dirname, "/public")));
-
-// Home Route
-app.get("/", (req, res) => {
-    res.render("home/index.ejs");
-});
-
-app.get("/delicacies", (req, res) => {
-    res.render("delicacies/index.ejs");
-});
-
-app.get("/submit", (req, res) => {
-    res.render("submit/index.ejs");
-});
-
-app.get("/hacks", (req, res) => {
-    res.render("hacks/index.ejs");
-});
 
 // Handle form submission
 app.post("/submit", upload.single("image"), async (req, res) => {
@@ -69,6 +40,8 @@ app.post("/submit", upload.single("image"), async (req, res) => {
         }
 
         const image = req.file.filename;
+
+        // Split ingredients into an array
         const ingredientsArray = (ingredients || "").split(",").map(ing => ing.trim());
 
         const newListing = new Listing({
@@ -88,15 +61,60 @@ app.post("/submit", upload.single("image"), async (req, res) => {
     }
 });
 
+// connect to cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Connect to MongoDB
+async function main() {
+    await mongoose.connect("mongodb://127.0.0.1:27017/flavorix");
+}
+main().then(() => {
+    console.log("Connected to MongoDB");
+}).catch(err => console.log("MongoDB Connection Error:", err));
+
+
+
+// Middleware and Settings
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
+app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
+// app.use(express.static('public'));
+
+// Home Route
+app.get("/", (req, res) => {
+    res.render("home/index.ejs"); // Assuming home/index.ejs exists
+});
+
+app.get('/delicacies', (req, res) => {
+    res.render("\delicacies/index.ejs");
+});
+
+
+app.get("/submit" , (req,res) => {
+    res.render("\submit/index.ejs");
+});
+
+app.get("/hacks" , (req,res) => {
+    res.render("\hacks/index.ejs");
+});
+
+// Route to Display All Dishes of a Category
 // Route to Display All Dishes of a Category
 app.get("/cuisine/:category", async (req, res) => {
     const { category } = req.params;
     try {
-        const dishes = await Listing.find({ category });
+        const dishes = await Listing.find({ category: category }); // Fetch dishes by category
         if (dishes.length === 0) {
-            return res.status(404).send("No dishes found for this category.");
+            res.status(404).send("No dishes found for this category.");
+        } else {
+            res.render("cuisine/index", { category, dishes }); // Renders cuisine/index.ejs
         }
-        res.render("cuisine/index", { category, dishes });
     } catch (err) {
         console.log(err);
         res.status(500).send("Server Error");
@@ -107,18 +125,19 @@ app.get("/cuisine/:category", async (req, res) => {
 app.get("/cuisine/:category/:id", async (req, res) => {
     const { id } = req.params;
     try {
-        const dish = await Listing.findById(id);
+        const dish = await Listing.findById(id); // Fetch dish by ID
         if (!dish) {
             return res.status(404).send("Dish not found");
         }
-        res.render("cuisine/show", { dish });
+        res.render("cuisine/show", { dish }); // Renders cuisine/show.ejs
     } catch (err) {
         console.error(err);
         res.status(500).send("Server Error");
     }
 });
 
-// Start the server
+
+// Server Start
 app.listen(3000, () => {
     console.log("Server running on http://localhost:3000");
 });
