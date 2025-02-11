@@ -9,12 +9,11 @@ const multer = require("multer");
 
 const app = express();
 
-// ✅ 1️⃣ MongoDB Atlas Connection
 async function main() {
     const dbUrl = process.env.ATLASDB_URL; // Get from environment variables
 
     if (!dbUrl) {
-        console.error("❌ MongoDB connection string is missing! Check environment variables.");
+        console.error(" MongoDB connection string is missing! Check environment variables.");
         process.exit(1);
     }
 
@@ -23,12 +22,12 @@ async function main() {
         useUnifiedTopology: true
     });
 
-    console.log("✅ Connected to MongoDB Atlas!");
+    console.log(" Connected to MongoDB Atlas!");
 }
 
-main().catch(err => console.log("❌ MongoDB Connection Error:", err));
+main().catch(err => console.log(" MongoDB Connection Error:", err));
 
-// ✅ 2️⃣ Multer for File Uploads (Saving Locally)
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, "/public/images"));
@@ -39,42 +38,36 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// ✅ 3️⃣ Middleware & Settings
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ 4️⃣ Routes
 
-// Home Route
 app.get("/", (req, res) => {
     res.render("home/index");
 });
 
-// Delicacies Page
 app.get("/delicacies", (req, res) => {
     res.render("delicacies/index");
 });
 
-// Submit Page
 app.get("/submit", (req, res) => {
     res.render("submit/index");
 });
 
-// Hacks Page
 app.get("/hacks", (req, res) => {
     res.render("hacks/index");
 });
 
-// ✅ 5️⃣ Handle Form Submission (Saving Recipe)
 app.post("/submit", upload.single("image"), async (req, res) => {
     try {
         const { email, recipeName, description, ingredients, category } = req.body;
 
         if (!req.file) {
-            return res.status(400).send("❌ File upload failed. Please select a valid file.");
+            return res.status(400).send(" File upload failed. Please select a valid file.");
         }
 
         const image = req.file.filename;
@@ -92,12 +85,11 @@ app.post("/submit", upload.single("image"), async (req, res) => {
         await newListing.save();
         res.redirect(`/cuisine/${category}`);
     } catch (err) {
-        console.error("❌ Error submitting recipe:", err);
-        res.status(500).send("❌ Error submitting recipe. Please try again.");
+        console.error(" Error submitting recipe:", err);
+        res.status(500).send(" Error submitting recipe. Please try again.");
     }
 });
 
-// ✅ 6️⃣ Route to Display All Dishes of a Category
 app.get("/cuisine/:category", async (req, res) => {
     const { category } = req.params;
     try {
@@ -109,12 +101,11 @@ app.get("/cuisine/:category", async (req, res) => {
 
         res.render("cuisine/index", { category, dishes });
     } catch (err) {
-        console.error("❌ Server Error:", err);
-        res.status(500).send("❌ Server Error.");
+        console.error(" Server Error:", err);
+        res.status(500).send(" Server Error.");
     }
 });
 
-// ✅ 7️⃣ Route to Display a Single Dish
 app.get("/cuisine/:category/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -126,13 +117,12 @@ app.get("/cuisine/:category/:id", async (req, res) => {
 
         res.render("cuisine/show", { dish });
     } catch (err) {
-        console.error("❌ Server Error:", err);
-        res.status(500).send("❌ Server Error.");
+        console.error(" Server Error:", err);
+        res.status(500).send(" Server Error.");
     }
 });
 
-// ✅ 8️⃣ Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(` Server running on port ${PORT}`);
 });
