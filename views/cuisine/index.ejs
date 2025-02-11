@@ -8,10 +8,10 @@
         </div>
         <div class="unique-dessert-section">
             <% dishes.forEach(dish => { %>
-                <div class="unique-dessert-item">
+                <div class="unique-dessert-items">
                     <a href="/cuisine/<%= category %>/<%= dish._id %>">
                         <!-- <img src="/images/<%= dish.image %>" alt="<%= dish.title %>"> -->
-                        <div class="unique-dessert-details">
+                        <div class="unique-dessert-detail">
                             <h3><%= dish.title %></h3>
                         </div>
                     </a>
